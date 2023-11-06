@@ -1,8 +1,0 @@
-db.customer.insertMany([{cid:101,cname:'ABC',amount:50000,product_name:"Iphone 14"},{cid:102,cname:'PQR',amount:60000,product_name:"S23 FE"},{cid:103,cname:'MNO',amount:45000,product_name:"Iphone 13"},{cid:104,cname:'GFG',amount:79990,product_name:'Iphone 15'}])
-
-
-var mapFunction=function(){ emit(this.cid,this.amount) }
-var reduceFunction=function(key,values){return Array.sum(values)}
-db.customer.mapReduce(mapFunction,reduceFunction,{out:'Customer_Summary'})
-
-db.Customer_Summary.find()
