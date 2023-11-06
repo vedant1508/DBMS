@@ -1,0 +1,38 @@
+create table old(rollno int primary key,name varchar(50));
+
+create table new(rollno int primary key, name varchar(50));
+
+insert into old values(1,"ABC"),(2,"XYZ"),(3,"PQR");
+
+
+
+delimiter //
+
+create procedure Merge()
+     begin
+     declare done INT DEFAULT FALSE;
+     declare rno int;
+     declare sname varchar(50);
+     declare c1 cursor for select rollno,name from old;
+     declare continue handler for not found set done= TRUE;
+     open c1;
+     read_loop:loop
+     fetch c1 into rno,sname;
+     if done then
+     leave read_loop;
+     end if;
+     if not exists(select 1 from new where rollno=rno and name=sname) then
+
+     insert into new(rollno,name) values(rno,Sname);
+     end if;
+     end loop;
+     close c1;
+     end;
+     //
+
+delimiter ;
+
+call Merge();
+
+select * from old;
+select * from new;

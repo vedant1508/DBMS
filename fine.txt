@@ -1,0 +1,37 @@
+create table borrower (rollno int primary key,name varchar(50),date_of_issue date,name_of_book varchar(50),status char);
+
+create table fine(rollno int,date date,amt decimal(10,2));
+
+insert into borrower values(1,"ABC",'2023.10.15','DBMS','I'),(2,"PQR",'2023.09.29','AI','I'),(3,'XYZ','2023.11.02','CN','I');
+
+
+delimiter //
+
+
+create procedure calculateFine(IN rno int,IN bookName varchar(50))
+     begin
+     declare dateofIssue date;
+     declare fine_amt decimal(10,2);
+     declare stat char;
+     declare days_late int;
+     declare exit handler for SQLEXCEPTION select "Record Not found";
+     select date_of_issue,status into dateofIssue,stat from borrower where rollno=rno and name_of_book=bookName;
+     set days_late=DATEDIFF(CURDATE(),dateofIssue);
+     IF days_late > 30 then
+      set fine_amt=days_late*50;
+     else
+     set fine_amt=days_late*5;
+     end if;
+     insert into fine values(rno,dateofIssue,fine_amt);
+     update borrower
+     set status='R'
+     where rollno=rno and name_of_book=bookName;
+     end //
+
+ delimiter ;
+
+call calculateFine(2,"AI");
+
+select * from fine;
+
+select * from borrower;

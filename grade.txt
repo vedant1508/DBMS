@@ -1,0 +1,27 @@
+create table studentMarks(name varchar(50),total_marks int);
+
+create table result(rollno int,name varchar(50),class varchar(50));
+
+insert into studentMarks values("ABC",1350),("PQR",950),("XYZ",830);
+
+DELIMITER //
+CREATE PROCEDURE proc_Grade(IN sname VARCHAR(50))
+     BEGIN
+         DECLARE stotal INT;
+         DECLARE sclass VARCHAR(50);
+    
+         SELECT total_marks INTO stotal FROM studentMarks WHERE name = sname;
+    
+         IF stotal >= 990 AND stotal <= 1500 THEN
+             SET sclass = 'Distinction';
+         ELSEIF stotal >= 900 AND stotal <= 989 THEN
+             SET sclass = 'First Class';
+         ELSEIF stotal >= 825 AND stotal <= 899 THEN
+             SET sclass = 'Higher Second Class';
+         END IF;
+    
+         SELECT sclass AS class;
+     END//
+
+DELIMITER ;
+call proc_Grade("ABC");

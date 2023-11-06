@@ -1,0 +1,9 @@
+create table student(sid int,sname varchar(50),class varchar(50),address varchar(50),grade varchar(10),enroll_date date,subject varchar(50),attendance int);
+
+insert into student  values(1,'ABC','10th','Nashik','A','2021.12.06','AI&DS',95),(2,'XYZ','9th','Pune','B','2022.3.12','CS',65),(3,'PQR','10th','Mumbai','A','2019.07.6','CS',63);
+
+create view studentView as select sid,sname,grade,attendance from student;
+select * from studentView;
+
+create index sindex on student(sname);
+show index from student;
